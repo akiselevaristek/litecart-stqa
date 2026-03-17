@@ -17,7 +17,6 @@
 ├── src
 │   ├── components
 │   ├── config
-│   ├── constants
 │   ├── fixtures
 │   ├── pages
 │   └── utils
