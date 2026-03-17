@@ -1,7 +1,9 @@
 import { test } from '@fixtures';
 import { appConfig } from '@config';
 
-test('User can login from sidebar', async ({ homePage }) => {
+test.use({ storageState: { cookies: [], origins: [] } });
+
+test('User can login from sidebar', { tag: ['@login'] }, async ({ homePage }) => {
   await homePage.goto();
   await homePage.loginBox.login(
     appConfig.credentials.email,

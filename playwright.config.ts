@@ -1,10 +1,11 @@
 import { defineConfig } from '@playwright/test';
-import { appConfig } from '@config';
+import { appConfig, authConfig } from '@config';
 
 const isHeaded = process.env.PW_HEADED === '1'
 
 export default defineConfig({
   testDir: './tests',
+  globalSetup: './src/setup/auth.setup.ts',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
@@ -15,6 +16,7 @@ export default defineConfig({
   ],
   use: {
     baseURL: appConfig.baseUrl,
+    storageState: authConfig.file,
     ignoreHTTPSErrors: true,
     trace: process.env.CI ? 'retain-on-failure' : 'on',
     screenshot: 'only-on-failure',
