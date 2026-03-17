@@ -42,7 +42,7 @@ cp .env.dist .env
 3. Заполнить `.env`:
 
 ```dotenv
-USERNAME=your-login
+EMAIL=your-email
 PASSWORD=your-password
 ```
 
