@@ -1,1 +1,1 @@
-export { Navigation } from './Navigation';
+export { LoginBox } from './LoginBox';

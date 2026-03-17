@@ -1,14 +1,14 @@
 import { Page } from '@playwright/test';
 import { BasePage } from '@pages';
-import { Navigation } from '@components';
+import { LoginBox } from '@components';
 import { URLS } from '@config';
 
 export class HomePage extends BasePage {
-  readonly navigation: Navigation;
+  readonly loginBox: LoginBox;
 
   constructor(page: Page) {
     super(page);
-    this.navigation = new Navigation(page);
+    this.loginBox = new LoginBox(page);
   }
 
   async goto() {
