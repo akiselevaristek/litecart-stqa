@@ -1,5 +1,5 @@
-import { defineConfig, devices } from '@playwright/test';
-import { appConfig } from './src/config';
+import { defineConfig } from '@playwright/test';
+import { appConfig } from '@config';
 
 const isHeaded = process.env.PW_HEADED === '1'
 
@@ -14,7 +14,7 @@ export default defineConfig({
     ['html', { open: 'never' }]
   ],
   use: {
-    baseURL: 'https://litecart.stqa.ru/en/',
+    baseURL: appConfig.baseUrl,
     ignoreHTTPSErrors: true,
     trace: process.env.CI ? 'retain-on-failure' : 'on',
     screenshot: 'only-on-failure',
@@ -34,4 +34,3 @@ export default defineConfig({
     },
   ],
 });
-
