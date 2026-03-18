@@ -21,7 +21,7 @@ export class LoginPage {
     await expect(this.successfulLoginMessage).toBeVisible();
   }
 
-  async loginAsDefaultUser() {
+  async applySessionAsDefaultUser() {
     const username = appConfig.credentials.email;
 
     if (await isSessionValidByUsername(username)) {
