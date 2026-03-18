@@ -13,7 +13,7 @@ export class CheckoutCartSection {
   }
 
   async expectProductPriceIs(price: string) {
-    const productPrice = this.root.locator(`xpath=.//li[contains(@class, "item")]//p[text()='${price}']`);
+    const productPrice = this.root.locator(`xpath=.//li[contains(@class, "item")][.//*[text()='${price}']]`);
     await expect(productPrice).toBeVisible();
   }
 
@@ -22,7 +22,7 @@ export class CheckoutCartSection {
     await expect(quantityInput).toBeVisible();
   }
 
-  async expectProductDetails(name: string, price: string, quantity: number) {
+  async expectProductDetails({name, price, quantity}: {name: string, price: string, quantity: number}) {
     await this.expectProductNameIs(name);
     await this.expectProductPriceIs(price);
     await this.expectProductQuantityIs(quantity.toString());

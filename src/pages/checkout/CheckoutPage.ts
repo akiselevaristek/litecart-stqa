@@ -8,13 +8,13 @@ import {
 export class CheckoutPage {
   readonly product: CheckoutCartSection;
   readonly details: CheckoutCustomerDetailsSection;
-  readonly summary: CheckoutOrderSummarySection;
+  readonly summaryTable: CheckoutOrderSummarySection;
   private readonly confirmOrderButton: Locator;
 
   constructor(private readonly page: Page) {
     this.product = new CheckoutCartSection(this.page);
     this.details = new CheckoutCustomerDetailsSection(this.page);
-    this.summary = new CheckoutOrderSummarySection(this.page);
+    this.summaryTable = new CheckoutOrderSummarySection(this.page);
     this.confirmOrderButton = this.page.locator('.confirm button');
   }
 

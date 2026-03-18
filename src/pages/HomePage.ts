@@ -4,14 +4,24 @@ import { URLS } from '@config';
 
 export type HomeSection = 'mostPopular' | 'campaigns' | 'latestProducts';
 
-export type Product = {
+type ProductBase = {
   locator: Locator;
   name: string;
   manufacturer: string;
   link: string;
   price: string;
-  priceWithDiscount?: string;
-}
+};
+
+export type RegularProduct = ProductBase & {
+  type: 'regular';
+};
+
+export type DiscountProduct = ProductBase & {
+  type: 'discount';
+  priceWithDiscount: string;
+};
+
+export type Product = RegularProduct | DiscountProduct;
 
 export class HomePage {
   readonly sidebarLoginForm: LoginForm;
@@ -46,7 +56,7 @@ export class HomePage {
     await this.sidebarAccountBox.logout();
   }
 
-  async getProductWithoutDiscount(): Promise<Product> {
+  async getProductWithoutDiscount(): Promise<RegularProduct> {
     const firstProductWithoutDiscount = this.page.locator('(//li//a[.//span[@class="price"]])[1]');
 
     await expect(firstProductWithoutDiscount).toBeVisible();
@@ -55,17 +65,23 @@ export class HomePage {
     const manufacturer = await firstProductWithoutDiscount.locator('.manufacturer').innerText();
     const link = await firstProductWithoutDiscount.getAttribute('href');
     const price = await firstProductWithoutDiscount.locator('.price').innerText();
+
+    if (!link) {
+      throw new Error('Product without discount does not have href');
+    }
+
     const product = {
+      type: 'regular' as const,
       locator: firstProductWithoutDiscount,
       name,
       manufacturer,
       link,
       price,
     };
-    return product as Product;
+    return product;
   }
 
-  async getProductWithDiscount(): Promise<Product> {
+  async getProductWithDiscount(): Promise<DiscountProduct> {
     const firstProductWithDiscount = this.page.locator('//li//a[.//*[@class="regular-price"]]').first();
 
     await expect(firstProductWithDiscount).toBeVisible();
@@ -75,7 +91,13 @@ export class HomePage {
     const link = await firstProductWithDiscount.getAttribute('href');
     const price = await firstProductWithDiscount.locator('.regular-price').innerText();
     const priceWithDiscount = await firstProductWithDiscount.locator('.campaign-price').innerText();
+
+    if (!link) {
+      throw new Error('Product with discount does not have href');
+    }
+
     const product = {
+      type: 'discount' as const,
       locator: firstProductWithDiscount,
       name,
       manufacturer,
@@ -83,6 +105,6 @@ export class HomePage {
       price,
       priceWithDiscount,
     };
-    return product as Product;
+    return product;
   }
 }

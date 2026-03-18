@@ -20,9 +20,7 @@ test.describe('Login', () => {
     const product = await test.step('Выбираем один товар без скидки. Товар выбран', async () => {
       const selectedProduct = await homePage.getProductWithoutDiscount();
       await selectedProduct.locator.click();
-      await productDetailsPage.expectProductDetailsAre(
-        selectedProduct.name, selectedProduct.price, selectedProduct.manufacturer, selectedProduct.link
-      );
+      await productDetailsPage.expectProductDetailsAre(selectedProduct);
       return selectedProduct;
     });
 
@@ -34,14 +32,16 @@ test.describe('Login', () => {
 
     await test.step('Осуществляем переход в корзину. Проверяем что кол-во продукта и цена соответствуют ожидаемому значению', async () => {
       await productDetailsPage.cart.clickCheckout();
-      await checkoutPage.product.expectProductDetails(product.name, product.price, 3);
-      await checkoutPage.summary.expectProductInTheTable(product.name, 3);
-      await checkoutPage.summary.expectTotalPriceForOneProduct(product.price, 3);
+      await checkoutPage.product.expectProductDetails({name: product.name, price: product.price, quantity: 3});
+      await checkoutPage.summaryTable.containsProducts({name: product.name, quantity: 3});
+      await checkoutPage.summaryTable.productCostIs({name: product.name, cost: product.price});
+      await checkoutPage.summaryTable.totalPriceForProductIs({price: product.price, count: 3});
     });
 
     await test.step('Подтверждение заказа. Заказ создан успешно', async () => {
       await checkoutPage.confirmOrder();
       await orderSuccessPage.expectSuccessfulOrderMessage();
+      await orderSuccessPage.cart.expectQuantityIs(0);
     });
   });
 
@@ -58,13 +58,7 @@ test.describe('Login', () => {
     const product = await test.step('Выбираем один товар со скидкой. Товар выбран', async () => {
       const selectedProduct = await homePage.getProductWithDiscount();
       await selectedProduct.locator.click();
-      await productDetailsPage.expectProductDetailsAre(
-        selectedProduct.name, 
-        selectedProduct.price, 
-        selectedProduct.manufacturer, 
-        selectedProduct.link, 
-        selectedProduct.priceWithDiscount
-      );
+      await productDetailsPage.expectProductDetailsAre(selectedProduct);
       return selectedProduct;
     });
 
@@ -76,15 +70,16 @@ test.describe('Login', () => {
 
     await test.step('Осуществляем переход в корзину. Проверяем что кол-во продукта и цена соответствуют ожидаемому значению с учетом скидки', async () => {
       await productDetailsPage.cart.clickCheckout();
-      await checkoutPage.product.expectProductDetails(product.name, product.price, 2);
-      await checkoutPage.summary.expectProductInTheTable(product.name, 2);
-      await checkoutPage.summary.expectProductUnitCostIs(product.name, product.priceWithDiscount);
-      await checkoutPage.summary.expectTotalPriceForOneProduct(product.price, 2);
+      await checkoutPage.product.expectProductDetails({name: product.name, price: product.priceWithDiscount, quantity: 2});
+      await checkoutPage.summaryTable.containsProducts({name: product.name, quantity: 2});
+      await checkoutPage.summaryTable.productCostIs({name: product.name, cost: product.priceWithDiscount});
+      await checkoutPage.summaryTable.totalPriceForProductIs({price: product.priceWithDiscount, count: 2});
     });
 
     await test.step('Подтверждение заказа. Заказ создан успешно', async () => {
       await checkoutPage.confirmOrder();
       await orderSuccessPage.expectSuccessfulOrderMessage();
+      await orderSuccessPage.cart.expectQuantityIs(0);
     });
   });
 });

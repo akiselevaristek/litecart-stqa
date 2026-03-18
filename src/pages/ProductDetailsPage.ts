@@ -1,5 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { Footer, LoginForm, SearchBox as SidebarSearchBox, SidebarAccountBox, CartWrapper } from '@components';
+import type { Product } from './HomePage';
+
+export type Size = 'Small' | 'Medium' | 'Large';
 
 export class ProductDetailsPage {
   readonly sidebarLoginForm: LoginForm;
@@ -10,6 +13,7 @@ export class ProductDetailsPage {
   readonly productBox: Locator;
   readonly addToCartButton: Locator;
   readonly quantityInput: Locator;
+  readonly sizeSelect: Locator;
   private readonly sidebar: Locator;
 
   constructor(private readonly page: Page) {
@@ -22,6 +26,7 @@ export class ProductDetailsPage {
     this.addToCartButton = this.page.locator('button[name="add_cart_product"]');
     this.productBox = this.page.locator('#box-product');
     this.quantityInput = this.productBox.locator('input[name="quantity"]');
+    this.sizeSelect = this.productBox.locator('select[name="options[Size]"]');
   }
 
   async expectProductNameIs(name: string) {
@@ -29,20 +34,12 @@ export class ProductDetailsPage {
     await expect(title).toBeVisible();
   }
 
-  private async isProductWithDiscount(): Promise<boolean> {
-    const price = this.productBox.locator('.price');
-    const regularPrice = this.productBox.locator('.regular-price');
-    await expect(price.or(regularPrice)).toBeVisible();
-    const isDiscount = (await regularPrice.count()) > 0;
-    return isDiscount;
-  }
-
   private async getPriceLocator(): Promise<Locator> {
     return this.productBox.locator(`.price`).or(this.productBox.locator(`.regular-price`));
   }
 
   private async getPriceWithDiscountLocator(): Promise<Locator> {
-    return this.productBox.locator(`.price`).or(this.productBox.locator(`.regular-price`));
+    return this.productBox.locator(`.campaign-price`);
   }
 
   async expectProductPriceIs(expectedPrice: string) {
@@ -66,18 +63,24 @@ export class ProductDetailsPage {
     await this.page.waitForURL(link);
   }
 
-  async expectProductDetailsAre(name: string, price: string, manufacturer: string, link: string, priceWithDiscount?: string) {
-    await this.expectProductNameIs(name);
-    await this.expectProductManufacturerIs(manufacturer);
-    await this.expectProductLinkIs(link);
-    await this.expectProductPriceIs(price);
-    if (await this.isProductWithDiscount() && priceWithDiscount) {
-      await this.expectProductPriceWithDiscountIs(priceWithDiscount);
+  async expectProductDetailsAre(product: Product) {
+    await this.expectProductNameIs(product.name);
+    await this.expectProductManufacturerIs(product.manufacturer);
+    await this.expectProductLinkIs(product.link);
+    await this.expectProductPriceIs(product.price);
+
+    if (product.type === 'discount') {
+      await this.expectProductPriceWithDiscountIs(product.priceWithDiscount);
     }
   }
 
-  async addToCart({ count }: { count: number }) {
+  async addToCart({ count, size = 'Small' }: { count: number; size?: Size }) {
     await this.quantityInput.fill(count.toString());
+
+    if (await this.sizeSelect.count()) {
+      await this.sizeSelect.selectOption(size);
+    }
+
     await this.addToCartButton.click();
   }
 }

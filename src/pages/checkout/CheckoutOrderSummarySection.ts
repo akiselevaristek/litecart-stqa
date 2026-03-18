@@ -1,4 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
+import { formatCurrency, parseCurrency, type CurrencyInput } from '@utils';
 
 const ORDER_SUMMARY_COLUMNS = [
   'quantity',
@@ -45,31 +46,32 @@ export class CheckoutOrderSummarySection {
     return row.locator('td').nth(columnIndex);
   }
 
-  async expectTotalPriceForOneProduct(price: string, count: number) {
+  async totalPriceForProductIs({price, count}: {price: CurrencyInput, count: number}) {
     const totalRow = this.table.locator('xpath=.//tr[contains(@class, "footer")]');
     const totalCell = totalRow.locator('td').last();
-    const numericPrice = Number(price.replace(/[^0-9.]/g, ''));
-    const expectedTotal = `$${(numericPrice * count).toFixed(2)}`;
+    const numericPrice = parseCurrency(price);
+    const expectedTotal = formatCurrency(numericPrice * count);
 
     await expect(totalRow).toBeVisible();
     await expect(totalCell).toHaveText(expectedTotal);
   }
 
-  async expectProductInTheTable(productName: string, quantity: number) {
-    const row = this.getProductRow(productName);
+  async containsProducts({name: name, quantity}: {name: string, quantity: number}) {
+    const row = this.getProductRow(name);
     const quantityCell = await this.getProductCell(row, 'quantity');
     const productCell = await this.getProductCell(row, 'item');
 
     await expect(row).toBeVisible();
-    await expect(productCell).toHaveText(productName);
+    await expect(productCell).toHaveText(name);
     await expect(quantityCell).toHaveText(quantity.toString());
   }
 
-  async expectProductUnitCostIs(productName: string, unitCost: string) {
-    const row = this.getProductRow(productName);
+  async productCostIs({name, cost}: {name: string, cost: CurrencyInput}) {
+    const row = this.getProductRow(name);
     const unitCostCell = await this.getProductCell(row, 'unit-cost');
+    const expectedCost = formatCurrency(cost);
 
     await expect(row).toBeVisible();
-    await expect(unitCostCell).toHaveText(unitCost);
+    await expect(unitCostCell).toHaveText(expectedCost);
   }
 }
