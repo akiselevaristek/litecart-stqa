@@ -1,6 +1,6 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { LoginForm } from '@components';
-import { URLS } from '@config';
+import { appConfig, URLS } from '@config';
 
 export class LoginPage {
   readonly loginForm: LoginForm;
@@ -15,5 +15,9 @@ export class LoginPage {
 
   async login(email: string, password: string) {
     await this.loginForm.login(email, password);
+  }
+
+  async loginAsDefaultUser() {
+    await this.login(appConfig.credentials.email, appConfig.credentials.password);
   }
 }

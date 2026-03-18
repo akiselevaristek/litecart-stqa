@@ -13,8 +13,6 @@
       "@config/*": ["src/config/*"],
       "@fixtures": ["src/fixtures/index.ts"],
       "@fixtures/*": ["src/fixtures/*"],
-      "@flows": ["src/flows/index.ts"],
-      "@flows/*": ["src/flows/*"],
       "@pages": ["src/pages/index.ts"],
       "@pages/*": ["src/pages/*"],
       "@utils": ["src/utils/index.ts"],
