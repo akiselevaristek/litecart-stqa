@@ -1,18 +1,20 @@
-import { Page } from '@playwright/test';
-import { AccountNavigation, LoginForm, SearchBox } from '@components';
+import { Page, Locator } from '@playwright/test';
+import { Footer, LoginForm, SearchBox, SidebarAccountBox } from '@components';
 import { URLS } from '@config';
 
 export class HomePage {
   readonly sidebarLoginForm: LoginForm;
-  readonly sidebarAccountNav: AccountNavigation;
-  readonly footerAccountNav: AccountNavigation;
+  readonly sidebarAccountBox: SidebarAccountBox;
+  readonly footer: Footer;
   readonly sidebarSearchBox: SearchBox;
+  private readonly sidebar: Locator;
 
   constructor(private readonly page: Page) {
-    this.sidebarLoginForm = new LoginForm(this.page.locator('#box-account-login'));
-    this.sidebarAccountNav = new AccountNavigation(this.page.locator('#box-account'));
-    this.footerAccountNav = new AccountNavigation(this.page.locator('#footer td.account'));
-    this.sidebarSearchBox = new SearchBox(this.page.locator('form[name="search_form"]'));
+    this.sidebar = this.page.locator('#navigation');
+    this.sidebarLoginForm = new LoginForm(this.sidebar);
+    this.sidebarAccountBox = new SidebarAccountBox(this.page);
+    this.footer = new Footer(this.page);
+    this.sidebarSearchBox = new SearchBox(this.sidebar);
   }
 
   async goto() {
@@ -24,6 +26,6 @@ export class HomePage {
   }
 
   async logout() {
-    await this.sidebarAccountNav.logout();
+    await this.sidebarAccountBox.logout();
   }
 }

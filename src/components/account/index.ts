@@ -1,1 +1,1 @@
-export { AccountNavigation } from './AccountNavigation';
+export { SidebarAccountBox } from './SidebarAccountBox';
