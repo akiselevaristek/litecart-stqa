@@ -15,6 +15,7 @@
       "@fixtures/*": ["src/fixtures/*"],
       "@pages": ["src/pages/index.ts"],
       "@pages/*": ["src/pages/*"],
+      "@test-data/*": ["src/test-data/*"],
       "@utils": ["src/utils/index.ts"],
       "@utils/*": ["src/utils/*"]
     },

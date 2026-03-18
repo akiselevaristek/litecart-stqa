@@ -1,11 +1,13 @@
-import { test, expect } from '@fixtures';
+import { test } from '@fixtures';
 import { URLS } from '@config';
 
 test.describe('Login', () => {
   test.only('Заказ одного товара без скидки', { tag: '@без-скидки' }, async ({
     authPage,
+    homePage,
   }) => {
     await authPage.goto(URLS.HOME);
-    await expect(authPage.locator('#box-account')).toBeVisible();
+    const product = await homePage.getProductWithoutDiscount();
+    await product.locator.click();
   });
 });
