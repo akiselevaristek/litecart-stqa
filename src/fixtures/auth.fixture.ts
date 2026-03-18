@@ -1,4 +1,4 @@
-import type { Browser } from '@playwright/test';
+import type { Browser, PlaywrightTestOptions } from '@playwright/test';
 import { mkdir } from 'fs/promises';
 import { authConfig, appConfig } from '@config';
 import { isStoredSessionValid } from '@api';
@@ -6,27 +6,7 @@ import { LoginPage } from '@pages';
 import { Logger } from '@utils';
 
 export type AuthFixtures = {
-  storageState:
-    | string
-    | {
-        cookies: {
-          name: string;
-          value: string;
-          domain: string;
-          path: string;
-          expires: number;
-          httpOnly: boolean;
-          secure: boolean;
-          sameSite: 'Strict' | 'Lax' | 'None';
-        }[];
-        origins: {
-          origin: string;
-          localStorage: {
-            name: string;
-            value: string;
-          }[];
-        }[];
-      };
+  storageState: PlaywrightTestOptions['storageState'];
 };
 
 async function ensureAuthState(browser: Browser): Promise<string> {
