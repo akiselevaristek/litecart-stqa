@@ -1,18 +1,28 @@
-import { test as base, expect, type Browser, type Page } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { apiClearCart, isStoredSessionValid } from '@api';
 import { appConfig, getAuthStatePath } from '@config';
-import { HomePage, LoginPage } from '@pages';
+import { HomePage, LoginPage, ProductDetailsPage } from '@pages';
 import { Logger, saveStoredSession } from '@utils';
 
+type TestOptions = {
+  useStorageState: boolean;
+};
+
 type PageFixtures = {
-  authPage: Page;
   clearCart: () => Promise<void>;
   homePage: HomePage;
   loginPage: LoginPage;
+  productDetailsPage: ProductDetailsPage;
 };
 
-export const test = base.extend<PageFixtures>({
-  authPage: async ({ browser }: { browser: Browser }, use) => {
+export const test = base.extend<PageFixtures & TestOptions>({
+  useStorageState: [false, { option: true }],
+  storageState: async ({ browser, useStorageState }, use) => {
+    if (!useStorageState) {
+      await use(undefined);
+      return;
+    }
+
     const email = appConfig.email;
     const storageStatePath = getAuthStatePath(email);
 
@@ -32,25 +42,20 @@ export const test = base.extend<PageFixtures>({
       Logger.info('New session created and stored successfully.');
     }
 
-    const authContext = await browser.newContext({
-      baseURL: appConfig.baseUrl,
-      ignoreHTTPSErrors: true,
-      storageState: storageStatePath,
-    });
     Logger.info('Stored session is applied.');
-    const authPage = await authContext.newPage();
-    await apiClearCart(authPage);
-    await use(authPage);
-    await authContext.close();
+    await use(storageStatePath);
   },
-  clearCart: async ({ page }: { page: Page }, use) => {
+  clearCart: async ({ page }, use) => {
     await use(() => apiClearCart(page));
   },
-  homePage: async ({ page }: { page: Page }, use) => {
+  homePage: async ({ page }, use) => {
     await use(new HomePage(page));
   },
-  loginPage: async ({ page }: { page: Page }, use) => {
+  loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
+  },
+  productDetailsPage: async ({ page }, use) => {
+    await use(new ProductDetailsPage(page));
   },
 });
 

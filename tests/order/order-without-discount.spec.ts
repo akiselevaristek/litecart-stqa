@@ -1,13 +1,16 @@
 import { test } from '@fixtures';
-import { URLS } from '@config';
 
 test.describe('Login', () => {
+  test.use({ useStorageState: true });
+
   test.only('Заказ одного товара без скидки', { tag: '@без-скидки' }, async ({
-    authPage,
     homePage,
+    productDetailsPage,
   }) => {
-    await authPage.goto(URLS.HOME);
+    await homePage.goto();
     const product = await homePage.getProductWithoutDiscount();
     await product.locator.click();
+    await productDetailsPage.expectProductDetailsAre(product);
+    await productDetailsPage.addToCart({ count: 3 });
   });
 });

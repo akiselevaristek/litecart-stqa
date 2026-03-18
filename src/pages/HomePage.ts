@@ -49,10 +49,10 @@ export class HomePage {
     const firstProductWithoutDiscount = this.page.locator('(//li//a[.//span[@class="price"]])[1]');
 
     await expect(firstProductWithoutDiscount).toBeVisible();
-    
+
     const name = await firstProductWithoutDiscount.locator('.name').innerText();
     const manufacturer = await firstProductWithoutDiscount.locator('.manufacturer').innerText();
-    const link = await firstProductWithoutDiscount.locator('.link').getAttribute('href');
+    const link = await firstProductWithoutDiscount.getAttribute('href');
     const price = await firstProductWithoutDiscount.locator('.price').innerText();
     const product = {
       locator: firstProductWithoutDiscount,
@@ -60,7 +60,7 @@ export class HomePage {
       manufacturer,
       link,
       price,
-    }
+    };
     return product as Product;
   }
 }
