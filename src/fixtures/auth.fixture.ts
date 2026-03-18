@@ -2,7 +2,7 @@ import type { Browser } from '@playwright/test';
 import { mkdir } from 'fs/promises';
 import { authConfig, appConfig } from '@config';
 import { isStoredSessionValid } from '@api';
-import { HomePage } from '@pages';
+import { LoginFlow } from '@flows';
 import { Logger } from '@utils';
 
 export type AuthFixtures = {
@@ -46,13 +46,9 @@ async function ensureAuthState(browser: Browser): Promise<string> {
 
   try {
     const page = await context.newPage();
-    const homePage = new HomePage(page);
+    const loginFlow = new LoginFlow(page);
 
-    await homePage.goto();
-    await homePage.loginBox.login(
-      appConfig.credentials.email,
-      appConfig.credentials.password
-    );
+    await loginFlow.loginAsDefaultUser();
 
     await context.storageState({ path: authConfig.file });
     Logger.info(`Saved auth state: ${authConfig.file}`);

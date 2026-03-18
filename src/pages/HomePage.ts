@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { BasePage } from '@pages';
+import { BasePage } from './BasePage';
 import { LoginBox } from '@components';
 import { URLS } from '@config';
 
