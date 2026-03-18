@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import { apiClearCart, isStoredSessionValid } from '@api';
 import { appConfig, getAuthStatePath } from '@config';
-import { HomePage, LoginPage, ProductDetailsPage } from '@pages';
+import { CheckoutPage, HomePage, LoginPage, OrderSuccessPage, ProductDetailsPage } from '@pages';
 import { Logger, saveStoredSession } from '@utils';
 
 type TestOptions = {
@@ -9,9 +9,11 @@ type TestOptions = {
 };
 
 type PageFixtures = {
+  checkoutPage: CheckoutPage;
   clearCart: () => Promise<void>;
   homePage: HomePage;
   loginPage: LoginPage;
+  orderSuccessPage: OrderSuccessPage;
   productDetailsPage: ProductDetailsPage;
 };
 
@@ -45,6 +47,9 @@ export const test = base.extend<PageFixtures & TestOptions>({
     Logger.info('Stored session is applied.');
     await use(storageStatePath);
   },
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
+  },
   clearCart: async ({ page }, use) => {
     await use(() => apiClearCart(page));
   },
@@ -53,6 +58,9 @@ export const test = base.extend<PageFixtures & TestOptions>({
   },
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
+  },
+  orderSuccessPage: async ({ page }, use) => {
+    await use(new OrderSuccessPage(page));
   },
   productDetailsPage: async ({ page }, use) => {
     await use(new ProductDetailsPage(page));

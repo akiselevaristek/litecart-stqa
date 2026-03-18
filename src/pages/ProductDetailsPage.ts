@@ -1,11 +1,12 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { Footer, LoginForm, SearchBox as SidebarSearchBox, SidebarAccountBox } from '@components';
+import { Footer, LoginForm, SearchBox as SidebarSearchBox, SidebarAccountBox, CartWrapper } from '@components';
 
 export class ProductDetailsPage {
   readonly sidebarLoginForm: LoginForm;
   readonly sidebarAccountBox: SidebarAccountBox;
   readonly footer: Footer;
   readonly sidebarSearchBox: SidebarSearchBox;
+  readonly cart: CartWrapper;
   readonly productBox: Locator;
   readonly addToCartButton: Locator;
   readonly quantityInput: Locator;
@@ -17,6 +18,7 @@ export class ProductDetailsPage {
     this.sidebarAccountBox = new SidebarAccountBox(this.page);
     this.footer = new Footer(this.page);
     this.sidebarSearchBox = new SidebarSearchBox(this.sidebar);
+    this.cart = new CartWrapper(this.page);
     this.addToCartButton = this.page.locator('button[name="add_cart_product"]');
     this.productBox = this.page.locator('#box-product');
     this.quantityInput = this.productBox.locator('input[name="quantity"]');
@@ -41,11 +43,11 @@ export class ProductDetailsPage {
     await this.page.waitForURL(link);
   }
 
-  async expectProductDetailsAre(product: { name: string; price: string; manufacturer: string; link: string }) {
-    await this.expectProductNameIs(product.name);
-    await this.expectProductPriceIs(product.price);
-    await this.expectProductManufacturerIs(product.manufacturer);
-    await this.expectProductLinkIs(product.link);
+  async expectProductDetailsAre(name: string, price: string, manufacturer: string, link: string) {
+    await this.expectProductNameIs(name);
+    await this.expectProductPriceIs(price);
+    await this.expectProductManufacturerIs(manufacturer);
+    await this.expectProductLinkIs(link);
   }
 
   async addToCart({ count }: { count: number }) {
