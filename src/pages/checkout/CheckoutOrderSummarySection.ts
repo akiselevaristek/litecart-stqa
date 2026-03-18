@@ -1,5 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
-import { formatCurrency, parseCurrency, type CurrencyInput } from '@utils';
+import { formatCurrencyFixed, parseCurrency, type CurrencyInput } from '@utils';
 
 const ORDER_SUMMARY_COLUMNS = [
   'quantity',
@@ -50,7 +50,7 @@ export class CheckoutOrderSummarySection {
     const totalRow = this.table.locator('xpath=.//tr[contains(@class, "footer")]');
     const totalCell = totalRow.locator('td').last();
     const numericPrice = parseCurrency(price);
-    const expectedTotal = formatCurrency(numericPrice * count);
+    const expectedTotal = formatCurrencyFixed(numericPrice * count);
 
     await expect(totalRow).toBeVisible();
     await expect(totalCell).toHaveText(expectedTotal);
@@ -69,7 +69,7 @@ export class CheckoutOrderSummarySection {
   async productCostIs({name, cost}: {name: string, cost: CurrencyInput}) {
     const row = this.getProductRow(name);
     const unitCostCell = await this.getProductCell(row, 'unit-cost');
-    const expectedCost = formatCurrency(cost);
+    const expectedCost = formatCurrencyFixed(cost);
 
     await expect(row).toBeVisible();
     await expect(unitCostCell).toHaveText(expectedCost);
