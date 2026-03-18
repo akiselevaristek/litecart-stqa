@@ -58,8 +58,12 @@ test.describe('Login', () => {
     const product = await test.step('Выбираем один товар со скидкой. Товар выбран', async () => {
       const selectedProduct = await homePage.getProductWithDiscount();
       await selectedProduct.locator.click();
-      await productDetailsPage.expectProductDiscountDetailsAre(
-        selectedProduct.name, selectedProduct.price, selectedProduct.manufacturer, selectedProduct.link
+      await productDetailsPage.expectProductDetailsAre(
+        selectedProduct.name, 
+        selectedProduct.price, 
+        selectedProduct.manufacturer, 
+        selectedProduct.link, 
+        selectedProduct.priceWithDiscount
       );
       return selectedProduct;
     });
@@ -74,7 +78,7 @@ test.describe('Login', () => {
       await productDetailsPage.cart.clickCheckout();
       await checkoutPage.product.expectProductDetails(product.name, product.price, 2);
       await checkoutPage.summary.expectProductInTheTable(product.name, 2);
-      await checkoutPage.summary.expectProductUnitCostIs(product.name, product.price);
+      await checkoutPage.summary.expectProductUnitCostIs(product.name, product.priceWithDiscount);
       await checkoutPage.summary.expectTotalPriceForOneProduct(product.price, 2);
     });
 

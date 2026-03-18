@@ -10,7 +10,7 @@ export type Product = {
   manufacturer: string;
   link: string;
   price: string;
-  priceWithDiscont?: string;
+  priceWithDiscount?: string;
 }
 
 export class HomePage {
@@ -74,14 +74,14 @@ export class HomePage {
     const manufacturer = await firstProductWithDiscount.locator('.manufacturer').innerText();
     const link = await firstProductWithDiscount.getAttribute('href');
     const price = await firstProductWithDiscount.locator('.regular-price').innerText();
-    const priceWithDiscont = await firstProductWithDiscount.locator('.campaign-price').innerText();
+    const priceWithDiscount = await firstProductWithDiscount.locator('.campaign-price').innerText();
     const product = {
       locator: firstProductWithDiscount,
       name,
       manufacturer,
       link,
       price,
-      priceWithDiscont,
+      priceWithDiscount,
     };
     return product as Product;
   }
