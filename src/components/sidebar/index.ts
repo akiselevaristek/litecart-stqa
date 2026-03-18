@@ -1,2 +1,2 @@
 export { AccountBox } from './AccountBox';
-export { LoginBox } from './LoginBox';
+export { SearchBox } from './SearchBox';

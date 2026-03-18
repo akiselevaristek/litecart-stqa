@@ -1,17 +1,15 @@
 import { expect, Locator, type Page } from '@playwright/test';
-import { AccountBox, LoginBox } from '@components';
+import { AccountBox } from '@components';
 import { appConfig } from '@config';
 import { HomePage } from '@pages';
 
 export class LoginFlow {
   private readonly homePage: HomePage;
-  private readonly loginBox: LoginBox;
   private readonly accountBox: AccountBox;
   readonly successMessage: Locator;
 
   constructor(private readonly page: Page) {
     this.homePage = new HomePage(page);
-    this.loginBox = new LoginBox(page);
     this.accountBox = new AccountBox(page);
     this.successMessage = this.page.getByText('You are now logged in as');
   }
@@ -22,7 +20,7 @@ export class LoginFlow {
 
   private async login(email: string, password: string): Promise<void> {
     await this.homePage.goto();
-    await this.loginBox.login(email, password);
+    await this.homePage.loginForm.login(email, password);
 
     const successNotice = this.page.locator('#notices .notice.success');
 

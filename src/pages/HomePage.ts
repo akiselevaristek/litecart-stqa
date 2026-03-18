@@ -1,14 +1,16 @@
 import { Page } from '@playwright/test';
-import { BasePage } from './BasePage';
-import { LoginBox } from '@components';
+import { LoginForm } from '@components';
 import { URLS } from '@config';
 
-export class HomePage extends BasePage {
-  readonly loginBox: LoginBox;
+export class HomePage {
+  private readonly page: Page;
+  readonly loginForm: LoginForm;
 
   constructor(page: Page) {
-    super(page);
-    this.loginBox = new LoginBox(page);
+    this.page = page;
+    this.loginForm = new LoginForm(
+      this.page.locator('#box-account-login')
+    );
   }
 
   async goto() {

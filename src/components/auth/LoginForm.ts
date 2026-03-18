@@ -1,13 +1,13 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
-export class LoginBox {
+export class LoginForm {
   readonly root: Locator;
   readonly email: Locator;
   readonly password: Locator;
   readonly loginButton: Locator;
 
-  constructor(private readonly page: Page) {
-    this.root = page.locator('#box-account-login');
+  constructor(root: Locator) {
+    this.root = root;
     this.email = this.root.locator('[name="email"]');
     this.password = this.root.locator('[name="password"]');
     this.loginButton = this.root.locator('[name="login"]');
