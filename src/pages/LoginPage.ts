@@ -1,6 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { LoginForm } from '@components';
 import { appConfig, URLS } from '@config';
+import { applyStoredSession, isSessionValidByUsername, saveStoredSession } from '@utils';
 
 export class LoginPage {
   readonly loginForm: LoginForm;
@@ -21,6 +22,16 @@ export class LoginPage {
   }
 
   async loginAsDefaultUser() {
-    await this.loginAs(appConfig.credentials.email, appConfig.credentials.password);
+    const username = appConfig.credentials.email;
+
+    if (await isSessionValidByUsername(username)) {
+      await applyStoredSession(this.page, username);
+      await this.page.goto(URLS.HOME);
+      return;
+    }
+
+    await this.goto();
+    await this.loginAs(username, appConfig.credentials.password);
+    await saveStoredSession(this.page, username);
   }
 }
