@@ -5,6 +5,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
+      "@api": ["src/api/index.ts"],
+      "@api/*": ["src/api/*"],
       "@components": ["src/components/index.ts"],
       "@components/*": ["src/components/*"],
       "@config": ["src/config/index.ts"],
