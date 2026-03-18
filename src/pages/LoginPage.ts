@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { LoginForm } from '@components';
 import { appConfig, URLS } from '@config';
-import { applyStoredSession, isSessionValidByUsername, saveStoredSession } from '@utils';
+import { applyStoredSession, isSessionValidByUsername, Logger, saveStoredSession } from '@utils';
 
 export class LoginPage {
   readonly loginForm: LoginForm;

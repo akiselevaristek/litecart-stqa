@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { mkdir, readFile } from 'fs/promises';
 import { isStoredSessionValid } from '@api';
 import { authConfig, getAuthStatePath } from '@config';
+import { Logger } from './logger';
 
 type StoredSession = {
   cookies: Array<{
@@ -25,10 +26,12 @@ export async function applyStoredSession(page: Page, username: string): Promise<
 
   if (storageState.cookies.length > 0) {
     await page.context().addCookies(storageState.cookies);
+    Logger.info(`Valid session is applied for ${username}.`);
   }
 }
 
 export async function saveStoredSession(page: Page, username: string): Promise<void> {
   await mkdir(authConfig.dir, { recursive: true });
   await page.context().storageState({ path: getAuthStatePath(username) });
+  Logger.info(`Session is saved for ${username}.`);
 }
