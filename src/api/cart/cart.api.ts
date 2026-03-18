@@ -9,6 +9,7 @@ export async function apiClearCart(page: Page): Promise<void> {
   while (true) {
     const checkoutHtml = await loadCheckoutHtml(page);
     if (isCartEmpty(checkoutHtml)) {
+      Logger.info('Cart is empty.');
       return;
     }
 
@@ -33,6 +34,7 @@ export async function apiClearCart(page: Page): Promise<void> {
     Logger.info('A cart item is removed via API. Checking if cart is empty...');
     const cartHtml = await response.text();
     if (isCartEmpty(cartHtml)) {
+      Logger.info('Cart is empty.');
       return;
     }
   }

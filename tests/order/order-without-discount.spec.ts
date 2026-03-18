@@ -1,11 +1,11 @@
-import { test } from '@fixtures';
-import { appConfig } from '@config';
+import { test, expect } from '@fixtures';
+import { URLS } from '@config';
 
 test.describe('Login', () => {
-  test('User can login from login page', {}, async ({ 
-    loginPage,
+  test.only('Заказ одного товара без скидки', { tag: '@без-скидки' }, async ({
+    authPage,
   }) => {
-    await loginPage.goto();
-    await loginPage.loginAs(appConfig.email, appConfig.password);
+    await authPage.goto(URLS.HOME);
+    await expect(authPage.locator('#box-account')).toBeVisible();
   });
 });

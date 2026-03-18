@@ -6,6 +6,6 @@ export const authConfig = {
   dir: authDir,
 };
 
-export function getAuthStatePath(username: string): string {
-  return path.join(authDir, `${username}.json`);
+export function getAuthStatePath(email: string): string {
+  return path.join(authDir, `${email}.json`);
 }
