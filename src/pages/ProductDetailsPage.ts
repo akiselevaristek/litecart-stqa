@@ -30,8 +30,14 @@ export class ProductDetailsPage {
   }
 
   async expectProductPriceIs(price: string) {
-    const priceLocator = this.productBox.locator(`xpath=.//span[@class="price"][text()='${price}']`);
+    const priceLocator = this.productBox.locator(`xpath=.//span[@class="price"][text()='${price}']`)
+    .or(this.productBox.locator(`xpath=.//s[@class="regular-price"][text()='${price}']`));
     await expect(priceLocator).toBeVisible();
+  }
+
+  async expectProductCampaignPriceIs(price: string) {
+    const campaignPriceLocator = this.productBox.locator(`xpath=.//*[contains(@class, "campaign-price")][text()='${price}']`);
+    await expect(campaignPriceLocator).toBeVisible();
   }
 
   async expectProductManufacturerIs(manufacturer: string) {
@@ -43,9 +49,19 @@ export class ProductDetailsPage {
     await this.page.waitForURL(link);
   }
 
-  async expectProductDetailsAre(name: string, price: string, manufacturer: string, link: string) {
+  async expectProductDetailsAre(name: string, price: string, manufacturer: string, link: string, priceWithDiscont?: string) {
     await this.expectProductNameIs(name);
     await this.expectProductPriceIs(price);
+    await this.expectProductManufacturerIs(manufacturer);
+    await this.expectProductLinkIs(link);
+    if (priceWithDiscont){
+      await 
+    }
+  }
+
+  async expectProductDiscountDetailsAre(name: string, price: string, manufacturer: string, link: string) {
+    await this.expectProductNameIs(name);
+    await this.expectProductCampaignPriceIs(price);
     await this.expectProductManufacturerIs(manufacturer);
     await this.expectProductLinkIs(link);
   }

@@ -10,6 +10,7 @@ export type Product = {
   manufacturer: string;
   link: string;
   price: string;
+  priceWithDiscont?: string;
 }
 
 export class HomePage {
@@ -60,6 +61,27 @@ export class HomePage {
       manufacturer,
       link,
       price,
+    };
+    return product as Product;
+  }
+
+  async getProductWithDiscount(): Promise<Product> {
+    const firstProductWithDiscount = this.page.locator('//li//a[.//*[@class="regular-price"]]').first();
+
+    await expect(firstProductWithDiscount).toBeVisible();
+
+    const name = await firstProductWithDiscount.locator('.name').innerText();
+    const manufacturer = await firstProductWithDiscount.locator('.manufacturer').innerText();
+    const link = await firstProductWithDiscount.getAttribute('href');
+    const price = await firstProductWithDiscount.locator('.regular-price').innerText();
+    const priceWithDiscont = await firstProductWithDiscount.locator('.campaign-price').innerText();
+    const product = {
+      locator: firstProductWithDiscount,
+      name,
+      manufacturer,
+      link,
+      price,
+      priceWithDiscont,
     };
     return product as Product;
   }
