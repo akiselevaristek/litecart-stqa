@@ -13,11 +13,11 @@ export class LoginPage {
     await this.page.goto(URLS.LOGIN);
   }
 
-  async login(email: string, password: string) {
+  async loginAs(email: string, password: string) {
     await this.loginForm.login(email, password);
   }
 
   async loginAsDefaultUser() {
-    await this.login(appConfig.credentials.email, appConfig.credentials.password);
+    await this.loginAs(appConfig.credentials.email, appConfig.credentials.password);
   }
 }
