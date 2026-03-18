@@ -22,7 +22,7 @@ export class LoginPage {
   }
 
   async applySessionAsDefaultUser() {
-    const username = appConfig.credentials.email;
+    const username = appConfig.email;
 
     if (await isSessionValidByUsername(username)) {
       await applyStoredSession(this.page, username);
@@ -31,7 +31,7 @@ export class LoginPage {
     }
 
     await this.goto();
-    await this.loginAs(username, appConfig.credentials.password);
+    await this.loginAs(username, appConfig.password);
     await saveStoredSession(this.page, username);
   }
 }
