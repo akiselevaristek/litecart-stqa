@@ -14,7 +14,7 @@ test.describe('Login', () => {
     orderSuccessPage,
   }) => {
     await test.step('Логин с тестовой учеткой. Логин прошел успешно', async () => {
-      await expect(homePage.sidebarAccountBox.logoutLink).toBeVisible();
+      await homePage.userIsLoggedIn();
     });
 
     const product = await test.step('Выбираем один товар без скидки. Товар выбран', async () => {
@@ -52,7 +52,7 @@ test.describe('Login', () => {
     orderSuccessPage,
   }) => {
     await test.step('Логин с тестовой учеткой. Логин прошел успешно', async () => {
-      await expect(homePage.sidebarAccountBox.logoutLink).toBeVisible();
+      await homePage.userIsLoggedIn();
     });
 
     const product = await test.step('Выбираем один товар со скидкой. Товар выбран', async () => {

@@ -48,6 +48,14 @@ export class HomePage {
     await this.page.goto(URLS.HOME);
   }
 
+  async isOpened() {
+    await expect(this.sectionLocators['mostPopular']).toBeVisible();
+  }
+
+  async userIsLoggedIn() {
+    await expect(this.sidebarAccountBox.logoutLink).toBeVisible();
+  }
+
   async login(email: string, password: string) {
     await this.sidebarLoginForm.login(email, password);
   }
@@ -56,8 +64,8 @@ export class HomePage {
     await this.sidebarAccountBox.logout();
   }
 
-  async getProductWithoutDiscount(): Promise<RegularProduct> {
-    const firstProductWithoutDiscount = this.page.locator('(//li//a[.//span[@class="price"]])[1]');
+  async getProductWithoutDiscount({ nth = 0 }: { nth?: number } = {}): Promise<RegularProduct> {
+    const firstProductWithoutDiscount = this.page.locator('//li//a[.//span[@class="price"]]').nth(nth);
 
     await expect(firstProductWithoutDiscount).toBeVisible();
 
@@ -81,8 +89,8 @@ export class HomePage {
     return product;
   }
 
-  async getProductWithDiscount(): Promise<DiscountProduct> {
-    const firstProductWithDiscount = this.page.locator('//li//a[.//*[@class="regular-price"]]').first();
+  async getProductWithDiscount({ nth = 0 }: { nth?: number } = {}): Promise<DiscountProduct> {
+    const firstProductWithDiscount = this.page.locator('//li//a[.//*[@class="regular-price"]]').nth(nth);
 
     await expect(firstProductWithDiscount).toBeVisible();
 

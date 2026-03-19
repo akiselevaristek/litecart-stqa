@@ -83,4 +83,8 @@ export class ProductDetailsPage {
 
     await this.addToCartButton.click();
   }
+
+  async openProductByLink(link: string) {
+    await this.page.goto(link);
+  }
 }
