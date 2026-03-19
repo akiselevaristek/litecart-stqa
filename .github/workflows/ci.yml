@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: playwright-ci
+  cancel-in-progress: false
+
 jobs:
   playwright:
     runs-on: ubuntu-latest
