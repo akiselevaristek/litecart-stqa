@@ -89,6 +89,18 @@ npm run test:ui
 npm run test:headed
 ```
 
+## CI
+
+В репозитории настроен минимальный GitHub Actions workflow для `push` в `main` и для `pull_request`.
+
+Для успешного прогона в настройках репозитория должны быть добавлены secrets:
+
+- `EMAIL`
+- `PASSWORD`
+
+Workflow использует `npm ci`, устанавливает `chromium` для Playwright и запускает `npm test`.
+При любом результате в artifacts выгружаются `playwright-report` и `test-results`, поэтому при падении можно скачать HTML-отчёт, trace, screenshots и другие артефакты прогона.
+
 ## Notes
 
 - В `playwright.config.ts` включен `ignoreHTTPSErrors: true`, потому что у тестового стенда просроченный SSL сертификат.
