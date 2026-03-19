@@ -4,9 +4,12 @@
 
 ## Stack
 
-- Playwright
+- Node.js / npm
+- Playwright Test
 - TypeScript
 - dotenv
+- Faker
+- Cheerio
 
 ## Project Structure
 
@@ -36,7 +39,7 @@
 1. Спек из `tests` импортирует `test` из `@fixtures`.
 2. Fixture поднимает нужные page objects и зависимости.
 3. Page object из `src/pages` использует компоненты из `src/components`.
-4. При необходимости сценарий опирается на конфиг из `src/config`, тестовые данные из `src/test-data`, генераторы из `src/generators` и утилиты из `src/utils`.
+4. При необходимости сценарий опирается на конфиг из `src/config`, генераторы из `src/generators` и утилиты из `src/utils`.
 5. Для отдельных технических действий без UI могут использоваться helper-методы из `src/api`.
 
 ## Setup
