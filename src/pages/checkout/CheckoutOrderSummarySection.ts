@@ -1,16 +1,16 @@
 import { Locator, expect, Page } from '@playwright/test';
 import { formatCurrencyFixed, parseCurrency, type CurrencyInput } from '@utils';
 
-const ORDER_SUMMARY_COLUMNS = [
-  'quantity',
-  'item',
-  'sku',
-  'unit-cost',
-  'tax',
-  'sum',
-] as const;
+export const ORDER_SUMMARY_COLUMN = {
+  quantity: 'quantity',
+  product: 'item',
+  sku: 'sku',
+  unitCost: 'unit-cost',
+  tax: 'tax',
+  total: 'sum',
+} as const;
 
-type OrderSummaryColumn = (typeof ORDER_SUMMARY_COLUMNS)[number];
+type OrderSummaryColumn = (typeof ORDER_SUMMARY_COLUMN)[keyof typeof ORDER_SUMMARY_COLUMN];
 
 export class CheckoutOrderSummarySection {
   readonly root: Locator;
@@ -27,7 +27,7 @@ export class CheckoutOrderSummarySection {
 
     for (let index = 0; index < headersCount; index++) {
       const headerClass = await headers.nth(index).getAttribute('class');
-      const classes = headerClass?.split(/\s+/) ?? [];
+      const classes = headerClass ? headerClass.split(/\s+/) : [];
 
       if (classes.includes(column)) {
         return index;
@@ -41,7 +41,7 @@ export class CheckoutOrderSummarySection {
     return this.table.locator(`xpath=.//tr[td[contains(@class, "item") and normalize-space(.)="${productName}"]]`);
   }
 
-  private async getProductCell(row: Locator, column: OrderSummaryColumn): Promise<Locator> {
+  private async getTableCell(row: Locator, column: OrderSummaryColumn): Promise<Locator> {
     const columnIndex = await this.getColumnIndex(column);
     return row.locator('td').nth(columnIndex);
   }
@@ -58,8 +58,8 @@ export class CheckoutOrderSummarySection {
 
   async containsProducts({name: name, quantity}: {name: string, quantity: number}) {
     const row = this.getProductRow(name);
-    const quantityCell = await this.getProductCell(row, 'quantity');
-    const productCell = await this.getProductCell(row, 'item');
+    const quantityCell = await this.getTableCell(row, ORDER_SUMMARY_COLUMN.quantity);
+    const productCell = await this.getTableCell(row, ORDER_SUMMARY_COLUMN.product);
 
     await expect(row).toBeVisible();
     await expect(productCell).toHaveText(name);
@@ -68,7 +68,7 @@ export class CheckoutOrderSummarySection {
 
   async productCostIs({name, cost}: {name: string, cost: CurrencyInput}) {
     const row = this.getProductRow(name);
-    const unitCostCell = await this.getProductCell(row, 'unit-cost');
+    const unitCostCell = await this.getTableCell(row, ORDER_SUMMARY_COLUMN.unitCost);
     const expectedCost = formatCurrencyFixed(cost);
 
     await expect(row).toBeVisible();
