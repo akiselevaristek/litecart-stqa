@@ -1,8 +1,13 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { LoginForm } from '@components';
 import { appConfig, URLS } from '@config';
+import { e } from '@faker-js/faker/dist/airline-Dz1uGqgJ';
 
-export type ErrorMessages = 'Wrong password or the account is disabled, or does not exist';
+export const ErrorMessages = {
+  invalidPasswordEmailDeactivate: 'Wrong password or the account is disabled, or does not exist'
+};
+
+export type ErrorMessages = (typeof ErrorMessages)[keyof typeof ErrorMessages];
 
 export class LoginPage {
   readonly loginForm: LoginForm;
@@ -11,7 +16,7 @@ export class LoginPage {
 
   constructor(private readonly page: Page) {
     this.successfulLoginMessage = this.page.locator('.notice.success');
-    this.error = this.page.locator('.notice.error');
+    this.error = this.page.locator('.notice.errors');
     this.loginForm = new LoginForm(this.page.locator('#box-login'));
   }
 

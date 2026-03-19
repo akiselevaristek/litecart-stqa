@@ -7,7 +7,7 @@ test.describe('Login', () => {
     await homePage.isOpened();
   });
 
-  test.only('Заказ товара без логина', { tag: ['@несколько-товаров', '@не-авторизованный'] }, async ({
+  test('Заказ товара без логина', { tag: ['@несколько-товаров', '@не-авторизованный'] }, async ({
     homePage,
     productDetailsPage,
     checkoutPage,

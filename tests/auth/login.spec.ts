@@ -1,22 +1,19 @@
 import { test } from '@fixtures';
 import { appConfig } from '@config';
+import { ErrorMessages } from '@pages/LoginPage';
 
 test.describe('Login', () => {
-  test('Пользователь может залогиниться в систему', {}, async ({ 
+  test('Пользователь может залогиниться в систему', { tag: ['@позитивный', '@логин'] }, async ({
     loginPage,
   }) => {
     await loginPage.goto();
     await loginPage.loginAs(appConfig.email, appConfig.password);
   });
 
-  test('Попытка логина с некорректным паролем', {}, async ({ 
+  test.only('Попытка логина с некорректным паролем', { tag: ['@негативный', '@логин'] }, async ({
     loginPage,
   }) => {
     await loginPage.goto();
-    await loginPage.tryToLogin(
-      appConfig.email, 
-      'wrong-password', 
-      'Wrong password or the account is disabled, or does not exist'
-    );
+    await loginPage.tryToLogin(appConfig.email, 'wrong-password', ErrorMessages.invalidPasswordEmailDeactivate);
   });
 });
