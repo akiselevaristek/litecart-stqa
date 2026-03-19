@@ -87,4 +87,17 @@ export class CheckoutCustomerDetailsSection {
     });
     await this.saveChanges();
   }
+
+  async expectDetailsAreEmpty() {
+    await expect(this.taxIdInput).toHaveValue('');
+    await expect(this.companyInput).toHaveValue('');
+    await expect(this.firstNameInput).toHaveValue('');
+    await expect(this.lastNameInput).toHaveValue('');
+    await expect(this.address1Input).toHaveValue('');
+    await expect(this.address2Input).toHaveValue('');
+    await expect(this.postcodeInput).toHaveValue('');
+    await expect(this.cityInput).toHaveValue('');
+    await expect(this.emailInput).toHaveValue('');
+    await expect(this.phoneInput).toHaveValue('');
+  }
 }

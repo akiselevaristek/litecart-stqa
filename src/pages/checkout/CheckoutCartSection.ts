@@ -7,24 +7,29 @@ export class CheckoutCartSection {
     this.root = page.locator('#box-checkout-cart');
   }
 
+  getCartRootByName = (name: string): Locator => {
+    return this.root.locator(`//form[@name="cart_form"][.//*[text()='${name}']]`);
+  };
+
   async expectProductNameIs(name: string) {
-    const productName = this.root.locator(`xpath=.//li[contains(@class, "item")]//strong[text()='${name}']`);
-    await expect(productName).toBeVisible();
+    const cartRoot = this.getCartRootByName(name);
+    await expect(cartRoot).toBeVisible();
   }
 
-  async expectProductPriceIs(price: string) {
-    const productPrice = this.root.locator(`xpath=.//li[contains(@class, "item")][.//*[text()='${price}']]`);
-    await expect(productPrice).toBeVisible();
+  async expectProductPriceIs(name: string, price: string) {
+    const cartRoot = this.getCartRootByName(name);
+    await expect(cartRoot).toContainText(price);
   }
 
-  async expectProductQuantityIs(quantity: string) {
-    const quantityInput = this.root.locator(`xpath=.//li[contains(@class, "item")]//input[@name="quantity" and @value='${quantity}']`);
-    await expect(quantityInput).toBeVisible();
+  async expectProductQuantityIs(name: string, quantity: string) {
+    const cartRoot = this.getCartRootByName(name);
+    const quantityLocator = cartRoot.locator('input[name="quantity"]');
+    await expect(quantityLocator).toHaveValue(quantity);
   }
 
   async expectProductDetails({name, price, quantity}: {name: string, price: string, quantity: number}) {
     await this.expectProductNameIs(name);
-    await this.expectProductPriceIs(price);
-    await this.expectProductQuantityIs(quantity.toString());
+    await this.expectProductPriceIs(name, price);
+    await this.expectProductQuantityIs(name, quantity.toString());
   }
 }

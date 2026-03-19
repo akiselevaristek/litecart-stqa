@@ -34,7 +34,10 @@ test.describe('Login', () => {
       await productDetailsPage.cart.clickCheckout();
       await checkoutPage.product.expectProductDetails({name: firstProduct.name, price: firstProduct.price, quantity: 1});
       await checkoutPage.product.expectProductDetails({name: secondProduct.name, price: secondProduct.price, quantity: 1});
-      console.log('firstProduct', firstProduct);
+    });
+
+    await test.step('Проверяем что данные по пользователю пустые', async () => {
+      await checkoutPage.customerDetails.expectUserDataIsEmpty();
     });
   });
 });
