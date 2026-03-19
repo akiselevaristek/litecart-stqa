@@ -1,28 +1,42 @@
-import { defineConfig, devices } from '@playwright/test';
-import { appConfig } from './src/config';
+import { defineConfig } from '@playwright/test';
+import { appConfig } from '@config';
+
+const isHeaded = process.env.PW_HEADED === '1'
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: [['html', { open: 'never' }]],
+  retries: process.env.CI ? 1 : 0,
+  timeout: 30_000,
+  workers: 1,
+  expect: {
+    timeout: 10_000,
+  },
+  reporter: [
+    ['line'],
+    ['html', { open: 'never' }]
+  ],
   use: {
+    actionTimeout: 10_000,
     baseURL: appConfig.baseUrl,
     ignoreHTTPSErrors: true,
-    trace: 'on-first-retry',
+    navigationTimeout: 10_000,
+    trace: process.env.CI ? 'retain-on-failure' : 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    viewport: { width: 1440, height: 900 },
   },
   projects: [
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
+        browserName: 'chromium',
+        headless: !isHeaded,
+        viewport: isHeaded ? null : { width: 1920, height: 1080 },
+        launchOptions: isHeaded
+          ? { args: ['--start-maximized'] }
+          : undefined,
       },
     },
   ],
 });
-

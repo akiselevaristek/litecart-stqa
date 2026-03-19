@@ -1,0 +1,1 @@
+export { CustomerDetailsGenerator } from './CustomerDetailsGenerator';

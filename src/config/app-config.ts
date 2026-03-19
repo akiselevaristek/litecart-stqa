@@ -1,10 +1,8 @@
 import { env } from './env';
 
 export const appConfig = {
-  baseUrl: 'https://litecart.stqa.ru/en',
-  credentials: {
-    username: env.USERNAME,
-    password: env.PASSWORD,
-  },
+  baseUrl: 'https://litecart.stqa.ru/en/',
+  email: env.EMAIL,
+  password: env.PASSWORD,
 };
 

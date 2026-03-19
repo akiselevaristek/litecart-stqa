@@ -15,6 +15,6 @@ function getRequiredEnv(name: string): string {
 }
 
 export const env = {
-  USERNAME: getRequiredEnv('USERNAME'),
+  EMAIL: getRequiredEnv('EMAIL'),
   PASSWORD: getRequiredEnv('PASSWORD'),
 };
