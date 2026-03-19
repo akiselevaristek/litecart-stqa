@@ -1,12 +1,15 @@
 # Litecart STQA
 
-Стартовая заготовка проекта для UI-автотестов на `Playwright + TypeScript` для сайта [litecart.stqa.ru](https://litecart.stqa.ru).
+Тестовй проект UI-автотестов на `Playwright + TypeScript` для сайта [litecart.stqa.ru](https://litecart.stqa.ru).
 
 ## Stack
 
-- Playwright
+- Node.js / npm
+- Playwright Test
 - TypeScript
 - dotenv
+- Faker
+- Cheerio
 
 ## Project Structure
 
@@ -21,7 +24,6 @@
 │   ├── fixtures          # кастомные Playwright fixtures и единая точка входа `test`
 │   ├── generators        # генераторы тестовых данных
 │   ├── pages             # page objects для страниц и крупных секций
-│   ├── test-data         # статические данные для тестовых сценариев
 │   └── utils             # общие утилиты, локаторные helper-ы, логирование, работа с сессией
 └── tests                 # пользовательские e2e-сценарии
     ├── auth              # сценарии авторизации
@@ -37,7 +39,7 @@
 1. Спек из `tests` импортирует `test` из `@fixtures`.
 2. Fixture поднимает нужные page objects и зависимости.
 3. Page object из `src/pages` использует компоненты из `src/components`.
-4. При необходимости сценарий опирается на конфиг из `src/config`, тестовые данные из `src/test-data`, генераторы из `src/generators` и утилиты из `src/utils`.
+4. При необходимости сценарий опирается на конфиг из `src/config`, генераторы из `src/generators` и утилиты из `src/utils`.
 5. Для отдельных технических действий без UI могут использоваться helper-методы из `src/api`.
 
 ## Setup
@@ -87,18 +89,18 @@ npm run test:ui
 npm run test:headed
 ```
 
-Открыть HTML-отчёт Playwright:
+## CI
 
-```bash
-npm run report
-```
+В репозитории настроен минимальный GitHub Actions workflow для `push` в `main` и для `pull_request`.
+
+Для успешного прогона в настройках репозитория должны быть добавлены secrets:
+
+- `EMAIL`
+- `PASSWORD`
+
+Workflow использует `npm ci`, устанавливает `chromium` для Playwright и запускает `npm test`.
+При любом результате в artifacts выгружаются `playwright-report` и `test-results`, поэтому при падении можно скачать HTML-отчёт, trace, screenshots и другие артефакты прогона.
 
 ## Notes
 
 - В `playwright.config.ts` включен `ignoreHTTPSErrors: true`, потому что у тестового стенда просроченный SSL сертификат.
-- Пока добавлена только инфраструктура без тест-кейсов.
-- Папки `pages`, `components`, `fixtures`, `utils`, `constants` созданы как задел под следующую итерацию.
-
-## GitHub
-
-Когда проект будет готов к публикации, можно добавить или обновить remote и отправить код в публичный репозиторий GitHub обычным `git push`.
