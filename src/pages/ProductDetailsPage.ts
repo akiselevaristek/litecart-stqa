@@ -1,15 +1,28 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { Footer, LoginForm, SearchBox as SidebarSearchBox, SidebarAccountBox, CartWrapper } from '@components';
-import type { Product } from './HomePage';
+import { 
+  Footer, 
+  LoginForm, 
+  SearchBox as SidebarSearchBox, 
+  SidebarAccountBox, 
+  CartWrapper, 
+  ProductListSection, 
+  RecentlyViewedSection
+} from '@components';
+import { PRODUCT_SECTION_SELECTOR } from '@components/product/ProductListSection';
+import type { Product } from '@components';
 
 export type Size = 'Small' | 'Medium' | 'Large';
 
 export class ProductDetailsPage {
   readonly sidebarLoginForm: LoginForm;
   readonly sidebarAccountBox: SidebarAccountBox;
-  readonly footer: Footer;
+  readonly sidebarRecentlyViewed: RecentlyViewedSection;
   readonly sidebarSearchBox: SidebarSearchBox;
+  readonly footer: Footer;
   readonly cart: CartWrapper;
+  readonly alsoPurchased: ProductListSection;
+  readonly similarProducts: ProductListSection;
+  readonly recentlyViewed: RecentlyViewedSection;
   readonly productBox: Locator;
   readonly addToCartButton: Locator;
   readonly quantityInput: Locator;
@@ -19,10 +32,14 @@ export class ProductDetailsPage {
   constructor(private readonly page: Page) {
     this.sidebar = this.page.locator('#navigation');
     this.sidebarLoginForm = new LoginForm(this.sidebar);
-    this.sidebarAccountBox = new SidebarAccountBox(this.page);
-    this.footer = new Footer(this.page);
+    this.recentlyViewed = new RecentlyViewedSection(this.sidebar);
+    this.sidebarAccountBox = new SidebarAccountBox(this.sidebar);
     this.sidebarSearchBox = new SidebarSearchBox(this.sidebar);
+    this.sidebarRecentlyViewed = new RecentlyViewedSection(this.sidebar);
+    this.footer = new Footer(this.page);
     this.cart = new CartWrapper(this.page);
+    this.alsoPurchased = new ProductListSection(this.page.locator(PRODUCT_SECTION_SELECTOR.alsoPurchased));
+    this.similarProducts = new ProductListSection(this.page.locator(PRODUCT_SECTION_SELECTOR.similarProducts));
     this.addToCartButton = this.page.locator('button[name="add_cart_product"]');
     this.productBox = this.page.locator('#box-product');
     this.quantityInput = this.productBox.locator('input[name="quantity"]');

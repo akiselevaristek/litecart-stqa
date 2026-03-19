@@ -11,12 +11,15 @@ test.describe('Login', () => {
     homePage,
     productDetailsPage,
     checkoutPage,
-    orderSuccessPage,
   }) => {
 
+    await test.step('Проверяем что Recently Viewed отсутствует', async () => {
+      await homePage.sidebarRecentlyViewed.notExists();
+    });
+
     const { firstProduct, secondProduct } = await test.step('Выбираем два разных товара и добавляем в корзину', async () => {
-        const firstProduct = await homePage.getProductWithoutDiscount({ nth: 0 });
-        const secondProduct = await homePage.getProductWithoutDiscount({ nth: 1 });
+        const firstProduct = await homePage.mostPopular.getProductWithoutDiscount({ nth: 0 });
+        const secondProduct = await homePage.mostPopular.getProductWithoutDiscount({ nth: 1 });
         expect(firstProduct.name).not.toBe(secondProduct.name);
 
         await productDetailsPage.openProductByLink(firstProduct.link);
@@ -37,7 +40,13 @@ test.describe('Login', () => {
     });
 
     await test.step('Проверяем что данные по пользователю пустые', async () => {
-      await checkoutPage.customerDetails.expectUserDataIsEmpty();
+      await checkoutPage.customerDetails.expectDetailsAreEmpty();
+    });
+
+    await test.step('Возврат на домашнюю страницу и проверяем что выбранные товары отображаются в блоке “Recently Viewed”', async () => {
+      await homePage.goto();
+      await homePage.sidebarRecentlyViewed.containsProductLink(firstProduct.link);
+      await homePage.sidebarRecentlyViewed.containsProductLink(secondProduct.link);
     });
   });
 });

@@ -21,7 +21,7 @@ test.describe('Login', () => {
     });
 
     const product = await test.step('Выбираем один товар без скидки. Товар выбран', async () => {
-      const selectedProduct = await homePage.getProductWithoutDiscount();
+      const selectedProduct = await homePage.mostPopular.getProductWithoutDiscount();
       await selectedProduct.locator.click();
       await productDetailsPage.expectProductDetailsAre(selectedProduct);
       return selectedProduct;
@@ -59,7 +59,7 @@ test.describe('Login', () => {
     });
 
     const product = await test.step('Выбираем один товар со скидкой. Товар выбран', async () => {
-      const selectedProduct = await homePage.getProductWithDiscount();
+      const selectedProduct = await homePage.campaigns.getProductWithDiscount();
       await selectedProduct.locator.click();
       await productDetailsPage.expectProductDetailsAre(selectedProduct);
       return selectedProduct;

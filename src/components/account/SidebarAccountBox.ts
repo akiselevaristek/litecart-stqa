@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 import { byHrefPart } from '@utils';
 
 export class SidebarAccountBox {
@@ -8,8 +8,8 @@ export class SidebarAccountBox {
   readonly editAccountLink: Locator;
   readonly logoutLink: Locator;
 
-  constructor(page: Page) {
-    this.accountBox = page.locator('#box-account');
+  constructor(root: Locator) {
+    this.accountBox = root.locator('#box-account');
     this.customerServiceLink = byHrefPart(this.accountBox, 'customer-service');
     this.orderHistoryLink = byHrefPart(this.accountBox, 'order_history');
     this.editAccountLink = byHrefPart(this.accountBox, 'edit_account');
