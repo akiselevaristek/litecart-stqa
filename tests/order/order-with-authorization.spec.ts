@@ -3,7 +3,10 @@ import { expect, test } from '@fixtures';
 test.describe('Login', () => {
   test.use({ useStorageState: true });
   test.beforeEach(async ({ homePage, clearCart }) => {
+    await clearCart();
     await homePage.goto();
+  });
+  test.afterEach(async ({ clearCart }) => {
     await clearCart();
   });
 

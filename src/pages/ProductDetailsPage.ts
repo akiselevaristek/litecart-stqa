@@ -60,7 +60,7 @@ export class ProductDetailsPage {
   }
 
   async expectProductLinkIs(link: string) {
-    await this.page.waitForURL(link);
+    await expect(this.page).toHaveURL(link);
   }
 
   async expectProductDetailsAre(product: Product) {
@@ -86,5 +86,7 @@ export class ProductDetailsPage {
 
   async openProductByLink(link: string) {
     await this.page.goto(link);
+    await this.expectProductLinkIs(link);
+    await expect(this.productBox).toBeVisible();
   }
 }
