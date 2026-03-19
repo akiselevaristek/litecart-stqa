@@ -10,7 +10,7 @@ test.describe('Login', () => {
     await loginPage.loginAs(appConfig.email, appConfig.password);
   });
 
-  test.only('Попытка логина с некорректным паролем', { tag: ['@негативный', '@логин'] }, async ({
+  test('Попытка логина с некорректным паролем', { tag: ['@негативный', '@логин'] }, async ({
     loginPage,
   }) => {
     await loginPage.goto();

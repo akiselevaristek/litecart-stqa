@@ -1,6 +1,6 @@
 # Litecart STQA
 
-Стартовая заготовка проекта для UI-автотестов на `Playwright + TypeScript` для сайта [litecart.stqa.ru](https://litecart.stqa.ru).
+Тестовй проект UI-автотестов на `Playwright + TypeScript` для сайта [litecart.stqa.ru](https://litecart.stqa.ru).
 
 ## Stack
 
@@ -21,7 +21,6 @@
 │   ├── fixtures          # кастомные Playwright fixtures и единая точка входа `test`
 │   ├── generators        # генераторы тестовых данных
 │   ├── pages             # page objects для страниц и крупных секций
-│   ├── test-data         # статические данные для тестовых сценариев
 │   └── utils             # общие утилиты, локаторные helper-ы, логирование, работа с сессией
 └── tests                 # пользовательские e2e-сценарии
     ├── auth              # сценарии авторизации
@@ -87,18 +86,6 @@ npm run test:ui
 npm run test:headed
 ```
 
-Открыть HTML-отчёт Playwright:
-
-```bash
-npm run report
-```
-
 ## Notes
 
 - В `playwright.config.ts` включен `ignoreHTTPSErrors: true`, потому что у тестового стенда просроченный SSL сертификат.
-- Пока добавлена только инфраструктура без тест-кейсов.
-- Папки `pages`, `components`, `fixtures`, `utils`, `constants` созданы как задел под следующую итерацию.
-
-## GitHub
-
-Когда проект будет готов к публикации, можно добавить или обновить remote и отправить код в публичный репозиторий GitHub обычным `git push`.
