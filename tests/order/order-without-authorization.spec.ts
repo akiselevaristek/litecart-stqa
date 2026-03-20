@@ -14,7 +14,7 @@ test.describe('Login', () => {
   }) => {
 
     await test.step('Проверяем что Recently Viewed отсутствует', async () => {
-      await homePage.sidebarRecentlyViewed.notExists();
+      await homePage.sidebar.recentlyViewed.notExists();
     });
 
     const { firstProduct, secondProduct } = await test.step('Выбираем два разных товара и добавляем в корзину', async () => {
@@ -45,8 +45,8 @@ test.describe('Login', () => {
 
     await test.step('Возврат на домашнюю страницу и проверяем что выбранные товары отображаются в блоке “Recently Viewed”', async () => {
       await homePage.goto();
-      await homePage.sidebarRecentlyViewed.containsProductLink(firstProduct.link);
-      await homePage.sidebarRecentlyViewed.containsProductLink(secondProduct.link);
+      await homePage.sidebar.recentlyViewed.containsProductLink(firstProduct.link);
+      await homePage.sidebar.recentlyViewed.containsProductLink(secondProduct.link);
     });
   });
 });

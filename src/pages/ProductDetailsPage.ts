@@ -1,12 +1,9 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { 
   Footer, 
-  LoginForm, 
-  SearchBox as SidebarSearchBox, 
-  SidebarAccountBox, 
   CartWrapper, 
   ProductListSection, 
-  RecentlyViewedSection
+  Sidebar
 } from '@components';
 import { PRODUCT_SECTION_SELECTOR } from '@components/product/ProductListSection';
 import type { Product } from '@components';
@@ -14,28 +11,18 @@ import type { Product } from '@components';
 export type Size = 'Small' | 'Medium' | 'Large';
 
 export class ProductDetailsPage {
-  readonly sidebarLoginForm: LoginForm;
-  readonly sidebarAccountBox: SidebarAccountBox;
-  readonly sidebarRecentlyViewed: RecentlyViewedSection;
-  readonly sidebarSearchBox: SidebarSearchBox;
+  readonly sidebar: Sidebar;
   readonly footer: Footer;
   readonly cart: CartWrapper;
   readonly alsoPurchased: ProductListSection;
   readonly similarProducts: ProductListSection;
-  readonly recentlyViewed: RecentlyViewedSection;
   readonly productBox: Locator;
   readonly addToCartButton: Locator;
   readonly quantityInput: Locator;
   readonly sizeSelect: Locator;
-  private readonly sidebar: Locator;
 
   constructor(private readonly page: Page) {
-    this.sidebar = this.page.locator('#navigation');
-    this.sidebarLoginForm = new LoginForm(this.sidebar);
-    this.recentlyViewed = new RecentlyViewedSection(this.sidebar);
-    this.sidebarAccountBox = new SidebarAccountBox(this.sidebar);
-    this.sidebarSearchBox = new SidebarSearchBox(this.sidebar);
-    this.sidebarRecentlyViewed = new RecentlyViewedSection(this.sidebar);
+    this.sidebar = new Sidebar(this.page);
     this.footer = new Footer(this.page);
     this.cart = new CartWrapper(this.page);
     this.alsoPurchased = new ProductListSection(this.page.locator(PRODUCT_SECTION_SELECTOR.alsoPurchased));
