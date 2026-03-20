@@ -19,7 +19,12 @@
 ├── playwright.config.ts  # общая конфигурация Playwright
 ├── src                   # исходный код тестового фреймворка
 │   ├── api               # API-хелперы и вспомогательные функции для технических шагов вне UI
-│   ├── components        # переиспользуемые UI-компоненты и виджеты страниц
+│   ├── components        # переиспользуемые UI-компоненты и композиционные блоки
+│   │   ├── auth          # формы авторизации
+│   │   ├── cart          # компоненты корзины
+│   │   ├── footer        # footer-компоненты
+│   │   ├── product       # продуктовые секции и карточки списков
+│   │   └── sidebar       # sidebar-контейнер и sidebar-specific подкомпоненты
 │   ├── config            # runtime-конфиг, env parsing, URL-ы и auth-настройки
 │   ├── fixtures          # кастомные Playwright fixtures и единая точка входа `test`
 │   ├── generators        # генераторы тестовых данных
@@ -31,6 +36,35 @@
 ```
 
 `src/config` является единой точкой входа для runtime-конфига. Тесты и вспомогательный код не должны читать `process.env` напрямую.
+
+### Components
+
+Текущая структура `src/components`:
+
+```text
+src/components
+├── auth
+│   ├── LoginForm.ts
+│   └── index.ts
+├── cart
+│   ├── CartWrapper.ts
+│   └── index.ts
+├── footer
+│   ├── Footer.ts
+│   └── index.ts
+├── product
+│   ├── ProductListSection.ts
+│   └── index.ts
+├── sidebar
+│   ├── Sidebar.ts
+│   ├── SidebarAccount.ts
+│   ├── SidebarRecentlyViewed.ts
+│   ├── SidebarSearch.ts
+│   └── index.ts
+└── index.ts
+```
+
+`sidebar` теперь является отдельной feature-папкой: в ней лежит контейнер `Sidebar` и все sidebar-specific компоненты. `product` содержит только общие продуктовые секции, не привязанные к layout sidebar.
 
 ### Как устроен тест
 
