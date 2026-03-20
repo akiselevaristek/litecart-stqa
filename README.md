@@ -37,35 +37,6 @@
 
 `src/config` является единой точкой входа для runtime-конфига. Тесты и вспомогательный код не должны читать `process.env` напрямую.
 
-### Components
-
-Текущая структура `src/components`:
-
-```text
-src/components
-├── auth
-│   ├── LoginForm.ts
-│   └── index.ts
-├── cart
-│   ├── CartWrapper.ts
-│   └── index.ts
-├── footer
-│   ├── Footer.ts
-│   └── index.ts
-├── product
-│   ├── ProductListSection.ts
-│   └── index.ts
-├── sidebar
-│   ├── Sidebar.ts
-│   ├── SidebarAccount.ts
-│   ├── SidebarRecentlyViewed.ts
-│   ├── SidebarSearch.ts
-│   └── index.ts
-└── index.ts
-```
-
-`sidebar` теперь является отдельной feature-папкой: в ней лежит контейнер `Sidebar` и все sidebar-specific компоненты. `product` содержит только общие продуктовые секции, не привязанные к layout sidebar.
-
 ### Как устроен тест
 
 Типичный поток выглядит так:
