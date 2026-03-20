@@ -1,6 +1,6 @@
 import { Locator } from '@playwright/test';
 
-export class SearchBox {
+export class SidebarSearch {
   readonly input: Locator;
 
   constructor(root: Locator) {

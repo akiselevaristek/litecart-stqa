@@ -28,7 +28,7 @@ export class HomePage {
   }
 
   async userIsLoggedIn() {
-    await expect(this.sidebar.accountBox.logoutLink).toBeVisible();
+    await expect(this.sidebar.account.logoutLink).toBeVisible();
   }
 
   async login(email: string, password: string) {
@@ -36,6 +36,6 @@ export class HomePage {
   }
 
   async logout() {
-    await this.sidebar.accountBox.logout();
+    await this.sidebar.account.logout();
   }
 }
